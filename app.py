@@ -3,6 +3,7 @@ import plotly.express as px
 from dash import Dash, html, dcc, Input, Output, dash_table
 import dash_bootstrap_components as dbc
 import re
+import os
 
 # ---- Load Data ----
 tweets = pd.read_csv("social_media_with_temporal_score.csv")
@@ -204,4 +205,6 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
 # ---- Run ----
 server = app.server #for render
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8050))  # use the Render-assigned port
+    app.run_server(host="0.0.0.0", port=port, debug=False)
     app.run(debug=True)
