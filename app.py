@@ -202,5 +202,6 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
     return fig, dbc.Row(cards, className="d-flex flex-wrap"), table
 
 # ---- Run ----
+server = app.server #for render
 if __name__ == "__main__":
     app.run(debug=True)
