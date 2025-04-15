@@ -203,8 +203,8 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
     return fig, dbc.Row(cards, className="d-flex flex-wrap"), table
 
 # ---- Run ----
-server = app.server #for render
+server = app.server  # for Render
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8050))  # use the Render-assigned port
     app.run_server(host="0.0.0.0", port=port, debug=False)
-    app.run(debug=True)
