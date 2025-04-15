@@ -5,6 +5,9 @@ import dash_bootstrap_components as dbc
 import re
 import os
 
+app = Dash(__name__)
+server = app.server
+
 # ---- Load Data ----
 tweets = pd.read_csv("social_media_with_temporal_score.csv")
 disaster_df = pd.read_csv("sensor_readings.csv")
@@ -203,8 +206,6 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
     return fig, dbc.Row(cards, className="d-flex flex-wrap"), table
 
 # ---- Run ----
-server = app.server  # for Render
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8050))  # use the Render-assigned port
-    app.run_server(host="0.0.0.0", port=port, debug=False)
+    port = int(os.environ.get("PORT", 8050))
+    app.run_server(host="0.0.0.0", port=port)
