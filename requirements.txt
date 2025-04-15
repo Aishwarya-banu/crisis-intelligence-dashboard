@@ -1,7 +1,5 @@
-streamlit
+dash
 pandas
-numpy
-transformers
-folium
-scikit-learn
-streamlit-folium
+plotly
+dash-bootstrap-components
+gunicorn
