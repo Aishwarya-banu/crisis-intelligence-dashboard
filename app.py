@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 from dash import Dash, html, dcc, Input, Output, dash_table
 import dash_bootstrap_components as dbc
 import re
@@ -211,11 +212,30 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             df = df[df["zone"] == zone]
         df = df[(df["date"] >= pd.to_datetime(start_date).date()) & (df["date"] <= pd.to_datetime(end_date).date())]
 
-        fig = px.scatter_mapbox(
-            df, lat="latitude", lon="longitude", color="facility", hover_name="name",
-            hover_data={"disaster": True, "predicted_impact": True, "recommended_action": True, "latitude": False, "longitude": False},
-            zoom=8
-        )
+         facility_icons = {
+        'Hospital': 'hospital',
+        'Shelter': 'home',
+        'Fire Station': 'fire-station',
+        'Unknown': 'marker'
+    }
+
+    fig = go.Figure()
+
+    for facility in df['facility'].unique():
+        sub_df = df[df['facility'] == facility]
+        fig.add_trace(go.Scattermapbox(
+            lat=sub_df['latitude'],
+            lon=sub_df['longitude'],
+            mode='markers',
+            marker=go.scattermapbox.Marker(
+                size=20,
+                symbol=facility_icons.get(facility, 'marker'),
+                color='blue' if facility == 'Hospital' else ('green' if facility == 'Shelter' else 'red')
+            ),
+            name=facility,
+            text=sub_df['name'],
+            hoverinfo='text'
+        ))
 
         impact_summary = df.groupby(["facility", "predicted_impact"]).size().unstack(fill_value=0).reset_index()
         table = dash_table.DataTable(
