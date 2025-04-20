@@ -47,20 +47,20 @@ server = app.server
 app.title = "Crisis Intelligence Dashboard"
 
 app.layout = dbc.Container([
-    html.H2("🛡 Crisis Intelligence System", className="my-4"),
-    html.P("Multi-layered crisis visualization and intelligence"),
+    html.H2("🛡 Crisis Intelligence System", className="my-4 text-primary"),
+    html.P("Multi-layered crisis visualization and intelligence", className="text-secondary"),
 
     dcc.Tabs(id="tabs", value="disasters", children=[
         dcc.Tab(label='🌩 Disaster Incidents', value='disasters'),
         dcc.Tab(label='🏥 Infrastructure Impact', value='infrastructure'),
         dcc.Tab(label='📣 Tweet Intelligence', value='tweets'),
-    ]),
+    ], style={"backgroundColor": "#f8f9fa", "borderRadius": "8px", "padding": "10px"}),
 
     html.Div(id="filters"),
-    dcc.Graph(id="map"),
+    dcc.Graph(id="map", style={"backgroundColor": "white", "padding": "10px", "borderRadius": "10px"}),
     html.Div(id="summary-cards"),
     html.Div(id="zone-table")
-], fluid=True)
+], fluid=True, style={"padding": "20px", "backgroundColor": "#f0f2f5"})
 
 # ---- Filters ----
 @app.callback(
@@ -106,15 +106,17 @@ def update_filters(tab):
             )
         ], md=3),
         dbc.Col([
-            html.Label("Date Range"),
-            dcc.DatePickerRange(
-                id='date-picker',
-                start_date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
-                end_date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
-                display_format='YYYY-MM-DD'
-            )
-        ], md=5),
-    ], className="my-3")
+    html.Div([
+        html.Label("Date Range"),
+        dcc.DatePickerRange(
+            id='date-picker',
+            start_date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
+            end_date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
+            display_format='YYYY-MM-DD',
+            style={"width": "100%"}
+        )
+    ])
+], md=3),
 
 # ---- Map + Summary + Table ----
 @app.callback(
@@ -143,10 +145,31 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
 
         fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", color="label", hover_name="text", zoom=8)
         cards = [
-            dbc.Card(dbc.CardBody([html.H5("🧵 Total Tweets"), html.H3(len(df))]), className="m-2"),
-            dbc.Card(dbc.CardBody([html.H5("✅ Likely Real"), html.H3((df['label'] == 'Likely Real').sum())]), className="m-2"),
-            dbc.Card(dbc.CardBody([html.H5("❌ Possibly Fake"), html.H3((df['label'] == 'Possibly Fake').sum())]), className="m-2")
-        ]
+    dbc.Card(
+        dbc.CardBody([
+            html.H5("🧵 Total Tweets", className="card-title"),
+            html.H3(len(df), className="card-text")
+        ]),
+        className="m-2 shadow-sm",
+        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
+    ),
+    dbc.Card(
+        dbc.CardBody([
+            html.H5("✅ Likely Real", className="card-title"),
+            html.H3((df['label'] == 'Likely Real').sum(), className="card-text")
+        ]),
+        className="m-2 shadow-sm",
+        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
+    ),
+    dbc.Card(
+        dbc.CardBody([
+            html.H5("❌ Possibly Fake", className="card-title"),
+            html.H3((df['label'] == 'Possibly Fake').sum(), className="card-text")
+        ]),
+        className="m-2 shadow-sm",
+        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
+    )
+]
 
     elif tab == "disasters":
         df = disaster_df.copy()
