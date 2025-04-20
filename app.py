@@ -6,7 +6,6 @@ import re
 import os
 
 app = Dash(__name__)
-server = app.server
 
 # ---- Load Data ----
 tweets = pd.read_csv("social_media_with_temporal_score.csv")
@@ -44,6 +43,7 @@ infra_df['facility'] = infra_df['infrastructure_type'].astype(str).str.lower().m
 
 # ---- Dash App Setup ----
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+server = app.server
 app.title = "Crisis Intelligence Dashboard"
 
 app.layout = dbc.Container([
