@@ -219,7 +219,7 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
         'Unknown': 'marker'
     }
 
-    fig = go.Figure()
+        fig = go.Figure()
 
     for facility in df['facility'].unique():
         sub_df = df[df['facility'] == facility]
