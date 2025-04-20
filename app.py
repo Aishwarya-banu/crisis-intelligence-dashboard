@@ -116,7 +116,8 @@ def update_filters(tab):
             style={"width": "100%"}
         )
     ])
-], md=3),
+], md=3)
+], className="my-3")
 
 # ---- Map + Summary + Table ----
 @app.callback(
