@@ -256,14 +256,14 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             df = df[df["zone"] == zone]
         df = df[(df["date"] >= pd.to_datetime(start_date).date()) & (df["date"] <= pd.to_datetime(end_date).date())]
 
-    facility_icons = {
+        facility_icons = {
         'Hospital': 'hospital',
         'Shelter': 'home',
         'Fire Station': 'fire-station',
         'Unknown': 'marker'
     }
 
-    fig = go.Figure()
+        fig = go.Figure()
 
     for facility in df['facility'].unique():
         sub_df = df[df['facility'] == facility]
