@@ -54,7 +54,7 @@ app.layout = dbc.Container([
         dcc.Tab(label='🌩 Disaster Incidents', value='disasters'),
         dcc.Tab(label='🏥 Infrastructure Impact', value='infrastructure'),
         dcc.Tab(label='📣 Tweet Intelligence', value='tweets'),
-    ], style={"backgroundColor": "#f8f9fa", "borderRadius": "8px", "padding": "10px"}),
+    ], style={"backgroundColor": "#ffe6e6", "borderRadius": "8px", "padding": "10px"}),
 
     html.Div(id="filters"),
     dcc.Graph(id="map", style={"backgroundColor": "white", "padding": "10px", "borderRadius": "10px"}),
