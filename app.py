@@ -1,6 +1,5 @@
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 from dash import Dash, html, dcc, Input, Output, dash_table
 import dash_bootstrap_components as dbc
 import re
@@ -43,25 +42,25 @@ facility_map = {
 infra_df['facility'] = infra_df['infrastructure_type'].astype(str).str.lower().map(facility_map).fillna('Unknown')
 
 # ---- Dash App Setup ----
-app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG], suppress_callback_exceptions=True)
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 server = app.server
 app.title = "Crisis Intelligence Dashboard"
 
 app.layout = dbc.Container([
-    html.H2("🛡 Crisis Intelligence System", className="my-4 text-primary",style={"color": "#b71c1c"}),
-    html.P("Multi-layered crisis visualization and intelligence", className="text-secondary",style={"color": "#212121"}),
+    html.H2("🛡 Crisis Intelligence System", className="my-4 text-primary"),
+    html.P("Multi-layered crisis visualization and intelligence", className="text-secondary"),
 
     dcc.Tabs(id="tabs", value="disasters", children=[
         dcc.Tab(label='🌩 Disaster Incidents', value='disasters'),
         dcc.Tab(label='🏥 Infrastructure Impact', value='infrastructure'),
         dcc.Tab(label='📣 Tweet Intelligence', value='tweets'),
-    ], style={"backgroundColor": "#ffe6e6", "borderRadius": "8px", "padding": "10px"}),
+    ], style={"backgroundColor": "#f8f9fa", "borderRadius": "8px", "padding": "10px"}),
 
     html.Div(id="filters"),
     dcc.Graph(id="map", style={"backgroundColor": "white", "padding": "10px", "borderRadius": "10px"}),
     html.Div(id="summary-cards"),
     html.Div(id="zone-table")
-], fluid=True, style={"padding": "20px", "backgroundColor": "#ffffff"})
+], fluid=True, style={"padding": "20px", "backgroundColor": "#f0f2f5"})
 
 # ---- Filters ----
 @app.callback(
@@ -79,77 +78,47 @@ def update_filters(tab):
             dcc.Dropdown(
                 id="tweet-select",
                 options=[{'label': l, 'value': l} for l in ['All', 'Likely Real', 'Possibly Fake']],
-                value="All",
-                style={
-        "backgroundColor": "#f5f5dc",
-        "color": "#212121",
-        "border": "1px solid #e53935",
-        "borderRadius": "5px"
-    }
+                value="All"
             )
-        ], md=2),
+        ], md=3),
         dbc.Col([
             html.Label("Disaster Type"),
             dcc.Dropdown(
                 id="disaster-select",
                 options=[{'label': d, 'value': d} for d in ['All', 'Flood', 'Fire', 'Earthquake', 'Hurricane']],
-                value="All",
-                style={
-        "backgroundColor": "#f5f5dc",
-        "color": "#212121",
-        "border": "1px solid #e53935",
-        "borderRadius": "5px"
-    }
+                value="All"
             )
-        ], md=2),
+        ], md=3),
         dbc.Col([
             html.Label("Infrastructure"),
             dcc.Dropdown(
                 id="infra-select",
                 options=[{'label': i, 'value': i} for i in ['All', 'Hospital', 'Shelter', 'Fire Station']],
-                value="All",
-                style={
-        "backgroundColor": "#f5f5dc",
-        "color": "#212121",
-        "border": "1px solid #e53935",
-        "borderRadius": "5px"
-    }
+                value="All"
             )
-        ], md=2),
+        ], md=3),
         dbc.Col([
             html.Label("Zone"),
             dcc.Dropdown(
                 id='zone-select',
                 options=[{'label': z, 'value': z} for z in ['All', 'Zone A', 'Zone B', 'Zone C', 'Zone D']],
-                value='All',
-                style={
-        "backgroundColor": "#f5f5dc",
-        "color": "#212121",
-        "border": "1px solid #e53935",
-        "borderRadius": "5px"
-    }
+                value='All'
             )
-        ], md=2),
+        ], md=3),
         dbc.Col([
-            html.Label("Start Date"),
-            dcc.DatePickerSingle(
-                id='start-date-picker',
-                date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
-                display_format='YYYY-MM-DD',
-                style={"backgroundColor": "#f5f5dc", "color": "#212121", "border": "1px solid #e53935", "borderRadius": "5px", "padding": "5px", "height": "38px", "width": "100%", "fontSize": "14px"}
-            )
-        ], md=2),
-        dbc.Col([
-            html.Label("End Date"),
-            dcc.DatePickerSingle(
-                id='end-date-picker',
-                date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
-                display_format='YYYY-MM-DD',
-                style={"backgroundColor": "#f5f5dc", "color": "#212121", "border": "1px solid #e53935", "borderRadius": "5px", "padding": "5px", "height": "38px", "width": "100%", "fontSize": "14px"}
-            )
-        ], md=2)
-    ], className="g-2 my-2")
-    
+    html.Div([
+        html.Label("Date Range"),
+        dcc.DatePickerRange(
+            id='date-picker',
+            start_date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
+            end_date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
+            display_format='YYYY-MM-DD',
+            style={"width": "100%"}
+        )
+    ])
+], md=3)
+], className="my-3")
+
 # ---- Map + Summary + Table ----
 @app.callback(
     Output("map", "figure"),
@@ -157,8 +126,8 @@ def update_filters(tab):
     Output("zone-table", "children"),
     Input("tabs", "value"),
     Input("zone-select", "value"),
-    Input('start-date-picker', 'date'),
-    Input('end-date-picker', 'date'),
+    Input("date-picker", "start_date"),
+    Input("date-picker", "end_date"),
     Input("tweet-select", "value"),
     Input("disaster-select", "value"),
     Input("infra-select", "value"),
@@ -183,12 +152,7 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             html.H3(len(df), className="card-text")
         ]),
         className="m-2 shadow-sm",
-        style={
-    "backgroundColor": "#ffe6e6",
-    "borderLeft": "5px solid #e53935",
-    "borderRadius": "10px",
-    "color": "#212121"
-}
+        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
     ),
     dbc.Card(
         dbc.CardBody([
@@ -196,12 +160,7 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             html.H3((df['label'] == 'Likely Real').sum(), className="card-text")
         ]),
         className="m-2 shadow-sm",
-        style={
-    "backgroundColor": "#ffe6e6",
-    "borderLeft": "5px solid #e53935",
-    "borderRadius": "10px",
-    "color": "#212121"
-}
+        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
     ),
     dbc.Card(
         dbc.CardBody([
@@ -209,12 +168,7 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             html.H3((df['label'] == 'Possibly Fake').sum(), className="card-text")
         ]),
         className="m-2 shadow-sm",
-        style={
-    "backgroundColor": "#ffe6e6",
-    "borderLeft": "5px solid #e53935",
-    "borderRadius": "10px",
-    "color": "#212121"
-}
+        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
     )
 ]
 
@@ -257,30 +211,11 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             df = df[df["zone"] == zone]
         df = df[(df["date"] >= pd.to_datetime(start_date).date()) & (df["date"] <= pd.to_datetime(end_date).date())]
 
-        facility_icons = {
-        'Hospital': 'hospital',
-        'Shelter': 'home',
-        'Fire Station': 'fire-station',
-        'Unknown': 'marker'
-    }
-
-        fig = go.Figure()
-
-    for facility in df['facility'].unique():
-        sub_df = df[df['facility'] == facility]
-        fig.add_trace(go.Scattermapbox(
-            lat=sub_df['latitude'],
-            lon=sub_df['longitude'],
-            mode='markers',
-            marker=go.scattermapbox.Marker(
-                size=20,
-                symbol=facility_icons.get(facility, 'marker'),
-                color='blue' if facility == 'Hospital' else ('green' if facility == 'Shelter' else 'red')
-            ),
-            name=facility,
-            text=sub_df['name'],
-            hoverinfo='text'
-        ))
+        fig = px.scatter_mapbox(
+            df, lat="latitude", lon="longitude", color="facility", hover_name="name",
+            hover_data={"disaster": True, "predicted_impact": True, "recommended_action": True, "latitude": False, "longitude": False},
+            zoom=8
+        )
 
         impact_summary = df.groupby(["facility", "predicted_impact"]).size().unstack(fill_value=0).reset_index()
         table = dash_table.DataTable(
