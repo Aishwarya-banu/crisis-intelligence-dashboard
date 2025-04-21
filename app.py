@@ -131,42 +131,24 @@ def update_filters(tab):
             )
         ], md=2),
         dbc.Col([
-    html.Label("Start Date"),
-    dcc.DatePickerSingle(
-        id='start-date-picker',
-        date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
-        display_format='YYYY-MM-DD',
-        style={
-            "backgroundColor": "#f5f5dc",
-            "color": "#212121",
-            "border": "1px solid #e53935",
-            "borderRadius": "5px",
-            "padding": "5px",
-            "height": "38px",
-            "width": "100%",
-            "fontSize": "14px"
-        }
-    )
-], md=2),
-], className="my-3"),
-    dbc.Col([
-    html.Label("End Date"),
-    dcc.DatePickerSingle(
-        id='end-date-picker',
-        date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
-        display_format='YYYY-MM-DD',
-        style={
-            "backgroundColor": "#f5f5dc",
-            "color": "#212121",
-            "border": "1px solid #e53935",
-            "borderRadius": "5px",
-            "padding": "5px",
-            "height": "38px",
-            "width": "100%",
-            "fontSize": "14px"
-        }
-    )
-], md=2)
+            html.Label("Start Date"),
+            dcc.DatePickerSingle(
+                id='start-date-picker',
+                date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
+                display_format='YYYY-MM-DD',
+                style={"backgroundColor": "#f5f5dc", "color": "#212121", "border": "1px solid #e53935", "borderRadius": "5px", "padding": "5px", "height": "38px", "width": "100%", "fontSize": "14px"}
+            )
+        ], md=2),
+        dbc.Col([
+            html.Label("End Date"),
+            dcc.DatePickerSingle(
+                id='end-date-picker',
+                date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
+                display_format='YYYY-MM-DD',
+                style={"backgroundColor": "#f5f5dc", "color": "#212121", "border": "1px solid #e53935", "borderRadius": "5px", "padding": "5px", "height": "38px", "width": "100%", "fontSize": "14px"}
+            )
+        ], md=2)
+    ], className="g-2 my-2")
     
 # ---- Map + Summary + Table ----
 @app.callback(
@@ -175,8 +157,8 @@ def update_filters(tab):
     Output("zone-table", "children"),
     Input("tabs", "value"),
     Input("zone-select", "value"),
-    Input("date-picker", "start_date"),
-    Input("date-picker", "end_date"),
+    Input('start-date-picker', 'date'),
+    Input('end-date-picker', 'date'),
     Input("tweet-select", "value"),
     Input("disaster-select", "value"),
     Input("infra-select", "value"),
