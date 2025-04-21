@@ -61,7 +61,7 @@ app.layout = dbc.Container([
     dcc.Graph(id="map", style={"backgroundColor": "white", "padding": "10px", "borderRadius": "10px"}),
     html.Div(id="summary-cards"),
     html.Div(id="zone-table")
-], fluid=True, style={"padding": "20px", "backgroundColor": "#f0f2f5"})
+], fluid=True, style={"padding": "20px", "backgroundColor": "#fff8e1"})
 
 # ---- Filters ----
 @app.callback(
@@ -153,7 +153,12 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             html.H3(len(df), className="card-text")
         ]),
         className="m-2 shadow-sm",
-        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
+        style={
+    "backgroundColor": "#fff3e0",  # Light amber
+    "borderLeft": "5px solid #f44336",  # Alert red stripe
+    "borderRadius": "10px",
+    "color": "#212121"
+}
     ),
     dbc.Card(
         dbc.CardBody([
@@ -161,7 +166,12 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             html.H3((df['label'] == 'Likely Real').sum(), className="card-text")
         ]),
         className="m-2 shadow-sm",
-        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
+        style={
+    "backgroundColor": "#fff3e0",  # Light amber
+    "borderLeft": "5px solid #f44336",  # Alert red stripe
+    "borderRadius": "10px",
+    "color": "#212121"
+}
     ),
     dbc.Card(
         dbc.CardBody([
@@ -169,7 +179,12 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
             html.H3((df['label'] == 'Possibly Fake').sum(), className="card-text")
         ]),
         className="m-2 shadow-sm",
-        style={"backgroundColor": "#ffffff", "borderRadius": "12px"}
+        style={
+    "backgroundColor": "#fff3e0",  # Light amber
+    "borderLeft": "5px solid #f44336",  # Alert red stripe
+    "borderRadius": "10px",
+    "color": "#212121"
+}
     )
 ]
 
