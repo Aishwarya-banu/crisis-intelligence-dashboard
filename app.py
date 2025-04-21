@@ -48,20 +48,20 @@ server = app.server
 app.title = "Crisis Intelligence Dashboard"
 
 app.layout = dbc.Container([
-    html.H2("🛡 Crisis Intelligence System", className="my-4 text-primary"),
-    html.P("Multi-layered crisis visualization and intelligence", className="text-secondary"),
+    html.H2("🛡 Crisis Intelligence System", className="my-4 text-primary",style={"color": "#b71c1c"}),
+    html.P("Multi-layered crisis visualization and intelligence", className="text-secondary",style={"color": "#212121"}),
 
     dcc.Tabs(id="tabs", value="disasters", children=[
         dcc.Tab(label='🌩 Disaster Incidents', value='disasters'),
         dcc.Tab(label='🏥 Infrastructure Impact', value='infrastructure'),
         dcc.Tab(label='📣 Tweet Intelligence', value='tweets'),
-    ], style={"backgroundColor": "#f8f9fa", "borderRadius": "8px", "padding": "10px"}),
+    ], style={"backgroundColor": "#ffe6e6", "borderRadius": "8px", "padding": "10px"}),
 
     html.Div(id="filters"),
     dcc.Graph(id="map", style={"backgroundColor": "white", "padding": "10px", "borderRadius": "10px"}),
     html.Div(id="summary-cards"),
     html.Div(id="zone-table")
-], fluid=True, style={"padding": "20px", "backgroundColor": "#fff8e1"})
+], fluid=True, style={"padding": "20px", "backgroundColor": "#ffffff"})
 
 # ---- Filters ----
 @app.callback(
@@ -79,7 +79,13 @@ def update_filters(tab):
             dcc.Dropdown(
                 id="tweet-select",
                 options=[{'label': l, 'value': l} for l in ['All', 'Likely Real', 'Possibly Fake']],
-                value="All"
+                value="All",
+                style={
+        "backgroundColor": "#f5f5dc",
+        "color": "#212121",
+        "border": "1px solid #e53935",
+        "borderRadius": "5px"
+    }
             )
         ], md=3),
         dbc.Col([
@@ -87,7 +93,13 @@ def update_filters(tab):
             dcc.Dropdown(
                 id="disaster-select",
                 options=[{'label': d, 'value': d} for d in ['All', 'Flood', 'Fire', 'Earthquake', 'Hurricane']],
-                value="All"
+                value="All",
+                style={
+        "backgroundColor": "#f5f5dc",
+        "color": "#212121",
+        "border": "1px solid #e53935",
+        "borderRadius": "5px"
+    }
             )
         ], md=3),
         dbc.Col([
@@ -95,7 +107,13 @@ def update_filters(tab):
             dcc.Dropdown(
                 id="infra-select",
                 options=[{'label': i, 'value': i} for i in ['All', 'Hospital', 'Shelter', 'Fire Station']],
-                value="All"
+                value="All",
+                style={
+        "backgroundColor": "#f5f5dc",
+        "color": "#212121",
+        "border": "1px solid #e53935",
+        "borderRadius": "5px"
+    }
             )
         ], md=3),
         dbc.Col([
@@ -103,7 +121,13 @@ def update_filters(tab):
             dcc.Dropdown(
                 id='zone-select',
                 options=[{'label': z, 'value': z} for z in ['All', 'Zone A', 'Zone B', 'Zone C', 'Zone D']],
-                value='All'
+                value='All',
+                style={
+        "backgroundColor": "#f5f5dc",
+        "color": "#212121",
+        "border": "1px solid #e53935",
+        "borderRadius": "5px"
+    }
             )
         ], md=3),
         dbc.Col([
@@ -114,7 +138,12 @@ def update_filters(tab):
             start_date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
             end_date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
             display_format='YYYY-MM-DD',
-            style={"width": "100%"}
+            style={"backgroundColor": "#f5f5dc",
+        "color": "#212121",
+        "border": "1px solid #e53935",
+        "borderRadius": "5px",
+        "padding": "6px",
+        "width": "100%"}
         )
     ])
 ], md=3)
@@ -154,8 +183,8 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
         ]),
         className="m-2 shadow-sm",
         style={
-    "backgroundColor": "#fff3e0",  # Light amber
-    "borderLeft": "5px solid #f44336",  # Alert red stripe
+    "backgroundColor": "#ffe6e6",
+    "borderLeft": "5px solid #e53935",
     "borderRadius": "10px",
     "color": "#212121"
 }
@@ -167,8 +196,8 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
         ]),
         className="m-2 shadow-sm",
         style={
-    "backgroundColor": "#fff3e0",  # Light amber
-    "borderLeft": "5px solid #f44336",  # Alert red stripe
+    "backgroundColor": "#ffe6e6",
+    "borderLeft": "5px solid #e53935",
     "borderRadius": "10px",
     "color": "#212121"
 }
@@ -180,8 +209,8 @@ def update_map(tab, zone, start_date, end_date, tweet_type, disaster_type, infra
         ]),
         className="m-2 shadow-sm",
         style={
-    "backgroundColor": "#fff3e0",  # Light amber
-    "borderLeft": "5px solid #f44336",  # Alert red stripe
+    "backgroundColor": "#ffe6e6",
+    "borderLeft": "5px solid #e53935",
     "borderRadius": "10px",
     "color": "#212121"
 }
