@@ -87,7 +87,7 @@ def update_filters(tab):
         "borderRadius": "5px"
     }
             )
-        ], md=3),
+        ], md=2),
         dbc.Col([
             html.Label("Disaster Type"),
             dcc.Dropdown(
@@ -101,7 +101,7 @@ def update_filters(tab):
         "borderRadius": "5px"
     }
             )
-        ], md=3),
+        ], md=2),
         dbc.Col([
             html.Label("Infrastructure"),
             dcc.Dropdown(
@@ -115,7 +115,7 @@ def update_filters(tab):
         "borderRadius": "5px"
     }
             )
-        ], md=3),
+        ], md=2),
         dbc.Col([
             html.Label("Zone"),
             dcc.Dropdown(
@@ -129,7 +129,7 @@ def update_filters(tab):
         "borderRadius": "5px"
     }
             )
-        ], md=3),
+        ], md=2),
         dbc.Col([
     html.Div([
         html.Label("Date Range"),
