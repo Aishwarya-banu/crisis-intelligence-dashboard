@@ -143,10 +143,10 @@ def update_filters(tab):
         "border": "1px solid #e53935",
         "borderRadius": "5px",
         "padding": "6px",
-        "width": "100%"}
+        "width": "70%"}
         )
     ])
-], md=3)
+], md=2)
 ], className="my-3")
 
 # ---- Map + Summary + Table ----
