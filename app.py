@@ -131,35 +131,43 @@ def update_filters(tab):
             )
         ], md=2),
         dbc.Col([
-    html.Label("Date Range"),
-    html.Div([
-        dcc.DatePickerRange(
-            id='date-picker',
-            start_date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
-            end_date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
-            minimum_nights=0,
-            display_format='YYYY-MM-DD',
-            style={
-                "border": "none", 
-                "width": "100%", 
-                "fontSize": "14px"
-            }
-        )
-    ], style={
-        "backgroundColor": "#f5f5dc",
-        "border": "1px solid #e53935",
-        "borderRadius": "5px",
-        "padding": "5px",
-        "height": "38px",
-        "display": "flex",
-        "alignItems": "center",
-        "justifyContent": "space-between",
-        "overflow": "hidden",
-        "width": "100%"
-    })
-], md=3)
-], className="my-3")
-
+    html.Label("Start Date"),
+    dcc.DatePickerSingle(
+        id='start-date-picker',
+        date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
+        display_format='YYYY-MM-DD',
+        style={
+            "backgroundColor": "#f5f5dc",
+            "color": "#212121",
+            "border": "1px solid #e53935",
+            "borderRadius": "5px",
+            "padding": "5px",
+            "height": "38px",
+            "width": "100%",
+            "fontSize": "14px"
+        }
+    )
+], md=2),
+], className="my-3"),
+    dbc.Col([
+    html.Label("End Date"),
+    dcc.DatePickerSingle(
+        id='end-date-picker',
+        date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
+        display_format='YYYY-MM-DD',
+        style={
+            "backgroundColor": "#f5f5dc",
+            "color": "#212121",
+            "border": "1px solid #e53935",
+            "borderRadius": "5px",
+            "padding": "5px",
+            "height": "38px",
+            "width": "100%",
+            "fontSize": "14px"
+        }
+    )
+], md=2)
+    
 # ---- Map + Summary + Table ----
 @app.callback(
     Output("map", "figure"),
