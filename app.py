@@ -43,7 +43,7 @@ facility_map = {
 infra_df['facility'] = infra_df['infrastructure_type'].astype(str).str.lower().map(facility_map).fillna('Unknown')
 
 # ---- Dash App Setup ----
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY], suppress_callback_exceptions=True)
 server = app.server
 app.title = "Crisis Intelligence Dashboard"
 
