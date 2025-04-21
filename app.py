@@ -138,12 +138,17 @@ def update_filters(tab):
             start_date=min(tweets['date'].min(), disaster_df['date'].min(), infra_df['date'].min()),
             end_date=max(tweets['date'].max(), disaster_df['date'].max(), infra_df['date'].max()),
             display_format='YYYY-MM-DD',
-            style={"backgroundColor": "#f5f5dc",
-        "color": "#212121",
-        "border": "1px solid #e53935",
-        "borderRadius": "5px",
-        "padding": "6px",
-        "width": "70%"}
+            style={
+    "backgroundColor": "#f5f5dc",
+    "color": "#212121",
+    "border": "1px solid #e53935",
+    "borderRadius": "5px",
+    "padding": "6px",
+    "height": "38px",        # 🔥 Added: height
+    "display": "flex",        # 🔥 Added: force inline display
+    "alignItems": "center",   # 🔥 Added: center vertically
+    "fontSize": "14px"        # 🔥 Added: match font size with dropdown
+}
         )
     ])
 ], md=2)
